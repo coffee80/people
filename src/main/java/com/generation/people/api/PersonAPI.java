@@ -28,6 +28,16 @@ public class PersonAPI {
     public List<PersonDTO> getMatthewBrothers() {
         return service.findBrothers(2);
     }
+
+    @GetMapping("/test3")
+    public List<PersonDTO> getFerdinandosChildren() {
+        return service.findSonsOf("Ferdinando");
+    }
+
+    @GetMapping("/test4")
+    public List<PersonDTO> getMiopi(){
+        return service.findByTrait("Miopia");
+    }
     
 
 }

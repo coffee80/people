@@ -1,7 +1,10 @@
 package com.generation.people.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,5 +52,18 @@ public class Person {
             res.addAll(motherChildren);
         return res;
     }
+    // età in cui sono diventato genitore
+    @JsonIgnore
+    public Integer getParentalAge(){
+        
+        List<Person> children = getChildren();
+        if(children.size()==0)
+            return null;
+
+        Comparator<Person> byAge = (p1, p2) -> p1.getBirthYear() - p2.getBirthYear();
+        children.sort(byAge);
+        return children.get(0).getBirthYear() - getBirthYear();
+    }
+
 
 }

@@ -11,31 +11,44 @@ import com.generation.people.model.Person;
 
 public interface PersonRepository extends JpaRepository<Person, Integer>{
 
+    // 1 - SQL legge RIGHE, JPQL legge oggetti
+    // 2 la sintassi non è identica. Io posso usare le RELAZIONI in JPQL e lo sto facendo ora
+    // lui tradurrà questa roba in una query SQL del DBMS sottostante
     @Query("SELECT p FROM Person p WHERE p.father.id = :fatherId AND p.mother.id = :motherId")
     List<Person> findByMotherIdAndFatherId(int fatherId, int motherId);
 
-    // 1 
-    // abbiamo stabilito che la miopia può essere editaria 
-    // e ci interessa tracciare fino a due generazioni indietro (padri e nonni)
-    // trovate tutte le persone che abbiano almeno un antenato miope
+    /*
+        select 
+                child.*
+        from
+                person as child inner join 
+                person as father
+        where
+                father.name = :fatherName
+    
+    */
+    @Query("SELECT p FROM Person p WHERE p.father.firstName = :fatherName")
+    List<Person> findSonsOfFather(String fatherName);
 
+    @Query("SELECT p FROM Person p where :traitName in (select t.name from Trait t where t.person.id = p.id)")
+    List<Person> findByTrait(String traitName);
 
-    // 2 
-    // dato il nome di un tratto, trovare tutti gli individui che lo posseggono o i cui genitori lo posseggono
+    // 1 trovare tutte le persone che abbiano uno fra due tratti specifici 
+    // esempio: miopia o presbiopia
 
-    // 3
+    // 2
     // trovare l'età media a cui una donna nata dopo il 1980 ha avuto il primo figlio
     // sviluppare questo metodo lavorando sia su repository (ad esempio, findByGenderAndBirthYear) che sulla entità
     // ad esempio, in Person, un metodo getAgeAtFirstChild(), età della persona al primo figlio, se c'è stato!
     // e poi in service, oppure sviluppare tutto in repository se si preferisce
 
-    // 4
+    // 3
     // trovare tutti i cugini primi di una persona data 
 
-    // 5
+    // 4
     // trovare tutte le donne che abbiano avuto figli da uomini diversi
 
-    // 6
+    // 5
     // trovare tutte le persone i cui genitori abbiano una differenza di età superiore ad n anni
     // con n parametro
 

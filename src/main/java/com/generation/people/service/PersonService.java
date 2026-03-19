@@ -30,5 +30,12 @@ public class PersonService {
         return repo.getBrothers(id).stream().map(mapper::toDTO).toList();
     }
 
+    public List<PersonDTO> findSonsOf(String fatherName){
+        return repo.findSonsOfFather(fatherName).stream().map(mapper::toDTO).toList();
+    }
+
+    public List<PersonDTO> findByTrait(String trait){
+        return repo.findByTrait(trait).stream().map(mapper::toDTO).toList();
+    }
 
 }
